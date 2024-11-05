@@ -70,6 +70,11 @@ export default class MyPlugin extends Plugin {
 		const folderPath = 'Chiari Checks';
 		const filePath = `${folderPath}/${fileName}`;
 
+		if (this.app.vault.getAbstractFileByPath(filePath)) {
+			new Notice(`Today's Chiari Health Check note already exists: ${fileName}`);
+			return;
+		}
+
 		try {
 			// Check if the folder exists; if not, create it
 			const folder = this.app.vault.getAbstractFileByPath(folderPath);
@@ -82,14 +87,16 @@ export default class MyPlugin extends Plugin {
 			const logFile = this.app.vault.getAbstractFileByPath(logFilePath);
 			if (!logFile) {
 				await this.app.vault.create(logFilePath, `Log of Chiari Checks:`);
+				const newLogFile = this.app.vault.getAbstractFileByPath(logFilePath);
+				const newLogContent = await this.app.vault.cachedRead(newLogFile as TFile);
+				await this.app.vault.modify(newLogFile as TFile, `${newLogContent}\n- [[${fileName}]]\n`);
 			} else {
 				const logContent = await this.app.vault.cachedRead(logFile as TFile);
 				await this.app.vault.modify(logFile as TFile, `${logContent}\n- [[${fileName}]]\n`);
 			}
 
 			// Create the new note with initial content
-			await this.app.vault.create(filePath, `What level is the pain you feel (1-10)? \n- \n\n Where is the pain localized? \n- \n\n Have you taken any meds for the pain? \n- \n\n
-				Any additional notes... \n - \n - \n -`);
+			await this.app.vault.create(filePath, `What level is the pain you feel (1-10)? \n- \n\n Where is the pain localized? \n- \n\n Have you taken any meds for the pain? \n- \n\n Any additional notes: \n - \n - \n - `);
 				
 			// Retrieve the created file
 			const file = this.app.vault.getAbstractFileByPath(filePath);
