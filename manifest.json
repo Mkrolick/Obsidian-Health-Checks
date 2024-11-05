@@ -1,0 +1,9 @@
+{
+	"id": "health-check",
+	"name": "Health Check",
+	"version": "0.1.0",
+	"description": "Small plugin for daily health checks.",
+	"author": "Malcolm Krolick",
+	"authorUrl": "maltech.org",
+	"isDesktopOnly": false
+}
