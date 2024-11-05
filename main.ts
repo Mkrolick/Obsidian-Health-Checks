@@ -96,7 +96,7 @@ export default class MyPlugin extends Plugin {
 			}
 
 			// Create the new note with initial content
-			await this.app.vault.create(filePath, `What level is the pain you feel (1-10)? \n- \n\n Where is the pain localized? \n- \n\n Have you taken any meds for the pain? \n- \n\n Any additional notes: \n - \n - \n - `);
+			await this.app.vault.create(filePath, `What time is it? \n- \n\n What level is the pain you feel (1-10)? \n- \n\n Where is the pain localized? \n- \n\n Have you taken any meds for the pain? \n- \n\n Any additional notes: \n - \n - \n - `);
 				
 			// Retrieve the created file
 			const file = this.app.vault.getAbstractFileByPath(filePath);
